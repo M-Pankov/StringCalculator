@@ -1,11 +1,18 @@
-﻿using Kata1;
+﻿using StringCalculatorProject;
+using System;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        var stringCalc = new StringCalculator();
-        Console.WriteLine(stringCalc.Add(Console.ReadLine()));
+        var stringCalc = new CustomStringCalculator();
+
+        var userData = Console.ReadLine();
+
+        var sumResult = stringCalc.Add(userData);
+
+        Console.WriteLine(sumResult);
+
         Console.ReadLine();
     }
 }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata1", "Kata1\Kata1.csproj", "{624459A5-4B12-4647-9F85-F7C3B99CF7A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringCalculator", "Kata1\StringCalculator.csproj", "{624459A5-4B12-4647-9F85-F7C3B99CF7A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata1Tests", "Kata1Tests\Kata1Tests.csproj", "{AE11CDF7-0000-442E-8022-76FF367B5B89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringCalculator.Tests", "Kata1Tests\StringCalculator.Tests.csproj", "{AE11CDF7-0000-442E-8022-76FF367B5B89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
