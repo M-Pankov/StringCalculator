@@ -90,7 +90,7 @@ public class CustomStringCalculator
         while (delimiterCurrentIndex < delimitersInString.Length - 1)
         {
 
-            if (delimitersInString[delimiterCurrentIndex] == ']' && delimitersInString[delimiterCurrentIndex + 1] == '[')
+            if (delimitersInString[delimiterCurrentIndex + 1] == '[')
             {
                 delimiters.Add(currentDelimiter.Remove(0, 1));
 
@@ -108,7 +108,7 @@ public class CustomStringCalculator
 
         delimiters.Add(currentDelimiter.Remove(0, 1));
 
-        return delimiters.Distinct().ToList();
+        return delimiters.Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
     }
 }
 
