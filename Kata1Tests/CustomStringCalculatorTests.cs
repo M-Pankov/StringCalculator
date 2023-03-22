@@ -35,7 +35,7 @@ public class CustomStringCalculatorTests
     [Fact]
     public void Add_CustomDelimitersAndSeveralNumbers_SumInResult()
     {
-        string input = "//[]]]][&&&]\n1]]]2&&&3";
+        string input = @"//[]]]][&&&]\n1]]]2&&&3";
 
         var result = _stringCalculator.Add(input);
 
@@ -45,7 +45,7 @@ public class CustomStringCalculatorTests
     [Fact]
     public void Add_SeveralNumbersWithOneNumberGreaterThenThousand_SumOfNumbersThatLessThenThousandInResult()
     {
-        string input = "1,2\n1001";
+        string input = @"1,2\n1001";
 
         var result = _stringCalculator.Add(input);
 

@@ -13,34 +13,38 @@ public class CustomStringCalculator
             return 0;
         }
 
-        IList<string> delimiters = new List<string>() { "\n", ",", @"\n" };
+        IList<string> delimiters = new List<string>() { ",", @"\n" };
 
         if (numbers.StartsWith("//"))
         {
-            var separatedDelimitersAndNumbers = SeparateCustomDelimitersAndNumbers(numbers);
+            var slashesEndIndex = 2;
 
-            delimiters = AddCustomDelimiters(separatedDelimitersAndNumbers.First(), delimiters);
+            numbers = numbers.Remove(0, slashesEndIndex);
 
-            numbers = separatedDelimitersAndNumbers.Last();
+            var delimitersEndIndex = numbers.IndexOf(@"\n");
+
+            var separatedCustomDelimiters = numbers.Substring(0, delimitersEndIndex);
+
+            numbers = numbers.Substring(delimitersEndIndex); 
+
+            delimiters = AddCustomDelimiters(separatedCustomDelimiters, delimiters);
         }
 
-        var stringsOfNumbers = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+        var numbersStrings = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
-        return CalculateSum(stringsOfNumbers);
+        return CalculateSum(numbersStrings);
     }
 
     private int CalculateSum(string[] numberStrings)
     {
-        IList<int> validNumbers = new List<int>();
+        var parsedNumbers = numberStrings.Select(x => int.Parse(x));
 
-        validNumbers = numberStrings.Select(x => int.Parse(x)).ToList();
+        ThrowNegativeNumbersException(parsedNumbers);
 
-        ThrowNegativeNumbersException(validNumbers);
-
-        return validNumbers.Where(x => x <= 1000).Sum();
+        return parsedNumbers.Where(x => x <= 1000).Sum();
     }
 
-    private void ThrowNegativeNumbersException(IList<int> numbers)
+    private void ThrowNegativeNumbersException(IEnumerable<int> numbers)
     {
         var negativeNumbers = numbers.Where(x => x < 0);
 
@@ -54,39 +58,6 @@ public class CustomStringCalculator
         throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersExceptionStrings));
     }
 
-    private IList<string> SeparateCustomDelimitersAndNumbers(string numbers)
-    {
-        var slashesEndIndex = 2;
-        
-        IList<string> separatedDelimitersAndNumbers = new List<string>();
-
-        numbers = numbers.Remove(0, slashesEndIndex);
-
-        var delimitersEndIndex = GetCustomDelimitersEndIndex(numbers);
-
-        var customDelimiters = numbers.Substring(0, delimitersEndIndex);
-
-        separatedDelimitersAndNumbers.Add(customDelimiters);
-
-        var numbersString = numbers.Substring(delimitersEndIndex);
-
-        separatedDelimitersAndNumbers.Add(numbersString);
-
-        return separatedDelimitersAndNumbers;
-    }
-
-    private int GetCustomDelimitersEndIndex(string numbers)
-    {
-        int delimitersEndIndex = numbers.IndexOf("\n");
-
-        if (delimitersEndIndex == -1)
-        {
-            delimitersEndIndex = numbers.IndexOf(@"\n");
-        }
-
-        return delimitersEndIndex;
-    }
-
     private IList<string> AddCustomDelimiters(string customDelimitersString, IList<string> delimiters)
     {
         if (!customDelimitersString.StartsWith('[') | !customDelimitersString.EndsWith(']'))
@@ -96,24 +67,25 @@ public class CustomStringCalculator
             return delimiters;
         }
 
-        var customDelimiters = customDelimitersString.Split("][", StringSplitOptions.RemoveEmptyEntries);
+        var customDelimitersStrings = RemoveAllSquareBracket(customDelimitersString);
 
-        var lastDelimiterIndex = customDelimiters.Length - 1;
-
-        var firstDelimiter = customDelimiters.First().Remove(0, 1);
-
-        customDelimiters[0] = firstDelimiter;
-
-        var lastDelimiter = customDelimiters.Last();
-
-        customDelimiters[lastDelimiterIndex] = lastDelimiter.Remove(lastDelimiter.Length - 1);
-
-        foreach (var customDelimiter in customDelimiters)
+        foreach (var customDelimiter in customDelimitersStrings)
         {
             delimiters.Add(customDelimiter);
         }
 
         return delimiters;
+    }
+
+    private IList<string> RemoveAllSquareBracket(string customDelimitersWithBrackets)
+    {
+        var delimitersStringWithoutFirstBracket = customDelimitersWithBrackets.Remove(0, 1);
+
+        var lastBracketIndex = delimitersStringWithoutFirstBracket.Length - 1;
+
+        var delimitersStringWithoutFirstAndLastSquareBrackets = delimitersStringWithoutFirstBracket.Remove(lastBracketIndex);
+
+        return delimitersStringWithoutFirstAndLastSquareBrackets.Split("][", StringSplitOptions.RemoveEmptyEntries);
     }
 }
 
