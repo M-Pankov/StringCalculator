@@ -67,9 +67,9 @@ public class CustomStringCalculator
             return delimiters;
         }
 
-        var customDelimitersStrings = RemoveAllSquareBracket(customDelimitersString);
+        var cleanDelimitersStrings = RemoveAllSquareBracket(customDelimitersString);
 
-        foreach (var customDelimiter in customDelimitersStrings)
+        foreach (var customDelimiter in cleanDelimitersStrings)
         {
             delimiters.Add(customDelimiter);
         }
@@ -79,13 +79,13 @@ public class CustomStringCalculator
 
     private IList<string> RemoveAllSquareBracket(string customDelimitersWithBrackets)
     {
-        var delimitersStringWithoutFirstBracket = customDelimitersWithBrackets.Remove(0, 1);
+        var delimitersWithoutFirstBracket = customDelimitersWithBrackets.Remove(0, 1);
 
-        var lastBracketIndex = delimitersStringWithoutFirstBracket.Length - 1;
+        var lastBracketIndex = delimitersWithoutFirstBracket.Length - 1;
 
-        var delimitersStringWithoutFirstAndLastSquareBrackets = delimitersStringWithoutFirstBracket.Remove(lastBracketIndex);
+        var delimitersWithoutFirstAndLastBrackets = delimitersWithoutFirstBracket.Remove(lastBracketIndex);
 
-        return delimitersStringWithoutFirstAndLastSquareBrackets.Split("][", StringSplitOptions.RemoveEmptyEntries);
+        return delimitersWithoutFirstAndLastBrackets.Split("][", StringSplitOptions.RemoveEmptyEntries);
     }
 }
 
