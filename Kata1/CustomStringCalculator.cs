@@ -67,7 +67,7 @@ public class CustomStringCalculator
             return delimiters;
         }
 
-        var cleanDelimitersStrings = RemoveAllSquareBracket(customDelimitersString);
+        var cleanDelimitersStrings = RemoveAllSquareBrackets(customDelimitersString);
 
         foreach (var customDelimiter in cleanDelimitersStrings)
         {
@@ -77,7 +77,7 @@ public class CustomStringCalculator
         return delimiters;
     }
 
-    private IEnumerable<string> RemoveAllSquareBracket(string customDelimitersWithBrackets)
+    private IEnumerable<string> RemoveAllSquareBrackets(string customDelimitersWithBrackets)
     {
         var delimitersWithoutFirstBracket = customDelimitersWithBrackets.Remove(0, 1);
 
