@@ -5,13 +5,13 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        var stringCalc = new CustomStringCalculator();
+        var stringCalculator = new CustomStringCalculator();
 
         var userData = Console.ReadLine();
 
-        var sumResult = stringCalc.Add(userData);
+        var sum = stringCalculator.Add(userData);
 
-        Console.WriteLine(sumResult);
+        Console.WriteLine(sum);
 
         Console.ReadLine();
     }

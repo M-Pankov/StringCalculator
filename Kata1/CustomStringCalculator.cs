@@ -17,83 +17,84 @@ public class CustomStringCalculator
 
         if (numbers.StartsWith("//"))
         {
-            int slashesEndIndex = 2;
+            var separatedDelimitersAndNumbers = SeparateCustomDelimitersAndNumbers(numbers);
 
-            numbers = numbers.Remove(0, slashesEndIndex);
+            delimiters = AddCustomDelimiters(separatedDelimitersAndNumbers.First(), delimiters);
 
-            var container = new DelimitersAndUserStringContainer(numbers, delimiters);
-
-            AddCustomDelimiters(container);
-
-            numbers = container.userNumberString;
+            numbers = separatedDelimitersAndNumbers.Last();
         }
 
-        var stringsToSum = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+        var stringsOfNumbers = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
-        var sumResult = CalculateSum(stringsToSum);
-
-        return sumResult;
+        return CalculateSum(stringsOfNumbers);
     }
 
     private int CalculateSum(string[] numberStrings)
     {
         IList<int> validNumbers = new List<int>();
 
-        IList<int> negativeNumbers = new List<int>();
+        validNumbers = numberStrings.Select(x => int.Parse(x)).ToList();
 
-        foreach (var numberString in numberStrings)
-        {
-
-            int.TryParse(numberString, out int numberParsResult);
-
-            if (numberParsResult < 0)
-            {
-                negativeNumbers.Add(numberParsResult);
-
-                continue;
-            }
-
-            validNumbers.Add(numberParsResult);
-        }
-
-
-        IsNegativeNumbersExsist(negativeNumbers);
+        ThrowNegativeNumbersException(validNumbers);
 
         return validNumbers.Where(x => x <= 1000).Sum();
     }
 
-    private void IsNegativeNumbersExsist(IList<int> negativeNumbers)
+    private void ThrowNegativeNumbersException(IList<int> numbers)
     {
+        var negativeNumbers = numbers.Where(x => x < 0);
+
         if (negativeNumbers.Any())
         {
-            var negativeNumbersExceptionStrings = ((List<int>)negativeNumbers).ConvertAll(x => x.ToString());
+            var negativeNumbersExceptionStrings = negativeNumbers.Select(x => x.ToString());
 
             throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersExceptionStrings));
         }
     }
 
-
-    private void AddCustomDelimiters(DelimitersAndUserStringContainer container)
+    private IList<string> SeparateCustomDelimitersAndNumbers(string numbers)
     {
-        int delimitersEndIndex = container.userNumberString.IndexOf('\n');
+        var slashesEndIndex = 2;
+        
+        IList<string> separatedDelimitersAndNumbers = new List<string>();
+
+        numbers = numbers.Remove(0, slashesEndIndex);
+
+        var delimitersEndIndex = GetCustomDelimitersEndIndex(numbers);
+
+        var customDelimiters = numbers.Substring(0, delimitersEndIndex);
+
+        separatedDelimitersAndNumbers.Add(customDelimiters);
+
+        var numbersString = numbers.Substring(delimitersEndIndex);
+
+        separatedDelimitersAndNumbers.Add(numbersString);
+
+        return separatedDelimitersAndNumbers;
+    }
+
+    private int GetCustomDelimitersEndIndex(string numbers)
+    {
+        int delimitersEndIndex = numbers.IndexOf("\n");
 
         if (delimitersEndIndex == -1)
         {
-            delimitersEndIndex = container.userNumberString.IndexOf(@"\n");
+            delimitersEndIndex = numbers.IndexOf(@"\n");
         }
 
-        var delimitersInString = container.userNumberString.Substring(0, delimitersEndIndex);
+        return delimitersEndIndex;
+    }
 
-        container.userNumberString = container.userNumberString.Substring(delimitersEndIndex);
-
-        if (!delimitersInString.StartsWith('[') | !delimitersInString.EndsWith(']'))
+    private IList<string> AddCustomDelimiters(string customDelimitersString, IList<string> delimiters)
+    {
+        if (!customDelimitersString.StartsWith('[') | !customDelimitersString.EndsWith(']'))
         {
-            container.delimiters.Add(delimitersInString);
+            delimiters.Add(customDelimitersString);
 
-            return;
+            return delimiters;
         }
 
-        var customDelimiters = delimitersInString.Split("][", StringSplitOptions.RemoveEmptyEntries);
+        var customDelimiters = customDelimitersString.Split("][", StringSplitOptions.RemoveEmptyEntries);
 
         var lastDelimiterIndex = customDelimiters.Length - 1;
 
@@ -105,10 +106,12 @@ public class CustomStringCalculator
 
         customDelimiters[lastDelimiterIndex] = lastDelimiter.Remove(lastDelimiter.Length - 1);
 
-        foreach (string customDelimiter in customDelimiters)
+        foreach (var customDelimiter in customDelimiters)
         {
-            container.delimiters.Add(customDelimiter);
+            delimiters.Add(customDelimiter);
         }
+
+        return delimiters;
     }
 }
 
