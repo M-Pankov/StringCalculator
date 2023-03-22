@@ -1,28 +1,30 @@
-﻿using StringCalculator.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StringCalculatorProject;
+namespace StringCalculator;
 
 public class CustomStringCalculator
 {
-    private List<string> _delimiters = new() { "\n", "," };
-
-    private List<int> _validNumbersList = new();
-
-    private List<int> _negativeNumbersList = new();
-
     public int Add(string numbers)
     {
+        List<string> delimiters = new() { "\n", ",", @"\n" };
+
         if (string.IsNullOrEmpty(numbers))
         {
             return 0;
         }
 
-        CheckNewDelimiters(numbers);
+        if (numbers.StartsWith("//"))
+        {
+            numbers = numbers.Remove(0, 2);
 
-        var stringsToSum = numbers.Split(_delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+            delimiters = AddCustomDelimiters(numbers, delimiters, out int delimitersEndIndex);
+
+            numbers = numbers.Substring(delimitersEndIndex);
+        }
+
+        var stringsToSum = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
         var sumResult = GetSumOfNumbers(stringsToSum);
 
@@ -31,6 +33,10 @@ public class CustomStringCalculator
 
     private int GetSumOfNumbers(string[] numberStrings)
     {
+        List<int> validNumbers = new();
+
+        List<int> negativeNumbers = new();
+
         foreach (var numberString in numberStrings)
         {
 
@@ -38,66 +44,71 @@ public class CustomStringCalculator
 
             int parseValue = numberStringParsResult;
 
-            if (CheckValidValues(parseValue))
+            if (parseValue < 0)
             {
-                _validNumbersList.Add(parseValue);
+                negativeNumbers.Add(parseValue);
+
+                continue;
             }
+
+            validNumbers.Add(parseValue);
         }
 
-        CheckNegativeNumbers();
+        if (negativeNumbers.Any())
+        {
+            var negativeNumbersExceptionStrings = negativeNumbers.ConvertAll(x => x.ToString());
 
-        return _validNumbersList.Sum();
+            throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersExceptionStrings));
+        }
+
+        return validNumbers.Where(x => x <= 1000).Sum();
     }
 
-    private bool CheckValidValues(int number)
+
+    private List<string> AddCustomDelimiters(string numbersAndCustomDelimiters, List<string> delimiters, out int delimitersEndIndex)
     {
-        if (number > 1000)
+        delimitersEndIndex = numbersAndCustomDelimiters.IndexOf('\n');
+
+        if (delimitersEndIndex == -1)
         {
-            return false;
-
-        }
-        else if (number < 0)
-        {
-            _negativeNumbersList.Add(number);
-
-            return false;
-
+            delimitersEndIndex = numbersAndCustomDelimiters.IndexOf(@"\n");
         }
 
-        return true;
-    }
+        var delimitersInString = numbersAndCustomDelimiters.Substring(0, delimitersEndIndex);
 
-    private void CheckNegativeNumbers()
-    {
-        if (_negativeNumbersList.Count > 0)
+        if (!delimitersInString.StartsWith('[') | !delimitersInString.EndsWith(']'))
         {
-            var negativeNumbersExceptionStrings = _negativeNumbersList.ConvertAll(x => x.ToString());
+            delimiters.Add(delimitersInString);
 
-            throw new NegativeNumberException("Negatives not allowed: " + String.Join(", ", negativeNumbersExceptionStrings));
-        }
-    }
-
-    private void CheckNewDelimiters(string numbers)
-    {
-        if (numbers.StartsWith("//"))
-        {
-            AddNewDelimiter(numbers.TrimStart('/'));
+            return delimiters.Distinct().ToList();
         }
 
-    }
+        string currentDelimiter = string.Empty;
 
-    private void AddNewDelimiter(string numbers)
-    {
-        int delimitersEndIndex = numbers.IndexOf('\n');
+        int delimiterCurrentIndex = 0;
 
-        var delimitersInString = numbers.Substring(0, delimitersEndIndex);
-
-        var delimitersToAdd = delimitersInString.Split(']', StringSplitOptions.RemoveEmptyEntries);
-
-        foreach (var delimiter in delimitersToAdd)
+        while (delimiterCurrentIndex < delimitersInString.Length - 1)
         {
-            _delimiters.Add(delimiter.TrimStart('['));
+
+            if (delimitersInString[delimiterCurrentIndex] == ']' && delimitersInString[delimiterCurrentIndex + 1] == '[')
+            {
+                delimiters.Add(currentDelimiter.Remove(0, 1));
+
+                currentDelimiter = string.Empty;
+
+                delimiterCurrentIndex++;
+
+                continue;
+            }
+
+            currentDelimiter += delimitersInString[delimiterCurrentIndex];
+
+            delimiterCurrentIndex++;
         }
+
+        delimiters.Add(currentDelimiter.Remove(0, 1));
+
+        return delimiters.Distinct().ToList();
     }
 }
 

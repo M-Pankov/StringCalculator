@@ -1,4 +1,4 @@
-﻿using StringCalculatorProject;
+﻿using StringCalculator;
 using System;
 
 internal class Program

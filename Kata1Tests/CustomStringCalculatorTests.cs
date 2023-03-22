@@ -1,63 +1,85 @@
 using FluentAssertions;
+using System;
 using Xunit;
 
-namespace StringCalculatorProject.Tests;
+namespace StringCalculator.Tests;
 
 public class CustomStringCalculatorTests
 {
-    [Fact]
-    public void Add_EmptyString_0()
+    CustomStringCalculator stringCalculator;
+
+    public CustomStringCalculatorTests()
     {
-        var stringCalculator = new CustomStringCalculator();
+        stringCalculator = new CustomStringCalculator();
+    }
 
-        int expected = 0;
-
+    [Fact]
+    public void Add_EmptyString_ExpectedNumberZeroInResult()
+    {
         string input = "";
 
         var result = stringCalculator.Add(input);
 
-        result.Should().Be(expected);
+        result.Should().Be(0);
     }
 
     [Fact]
-    public void Add_1_1()
+    public void Add_NumberOne_ExpectedNumberOneInResult()
     {
-        var stringCalculator = new CustomStringCalculator();
+        string input = "1";
 
-        int expected = 1;
+        var result = stringCalculator.Add(input);
 
-        string firstInput = "1";
-
-        var firstResult = stringCalculator.Add(firstInput);
-
-        firstResult.Should().Be(expected);
+        result.Should().Be(1);
     }
 
     [Fact]
-    public void Add_126_6()
+    public void Add_NumbersOneTwoThreeWithStandartDelimiters_ExpectedNumberSixInResult()
     {
-        var stringCalculator = new CustomStringCalculator();
+        string input = "1,2\n3";
 
-        int expected = 6;
+        var result = stringCalculator.Add(input);
 
-        string firstInput = "1,2\n3";
-
-        var firstResult = stringCalculator.Add(firstInput);
-
-        firstResult.Should().Be(expected);
+        result.Should().Be(6);
     }
 
     [Fact]
-    public void Add_NewDelimiters11111_5()
+    public void Add_CastomDelimitersAndNumbersOneTwoThree_ExpectedNumberSixInResult()
     {
-        var stringCalculator = new CustomStringCalculator();
+        string input = "//[]]]][&&&]\n1]]]2&&&3";
 
-        int expected = 5;
+        var result = stringCalculator.Add(input);
 
-        string firstInput = "//[$$$][&&&]\n1\n1,1$$$1&&&1";
+        result.Should().Be(6);
+    }
+    [Fact]
+    public void Add_CastomDelimitersAndNumbersOneTwoThreeInVerbatimString_ExpectedNumberSixInResult()
+    {
+        string input = @"//[]]]][&&&]\n1]]]2&&&3";
 
-        var firstResult = stringCalculator.Add(firstInput);
+        var result = stringCalculator.Add(input);
 
-        firstResult.Should().Be(expected);
+        result.Should().Be(6);
+    }
+
+
+    [Fact]
+    public void Add_NumbersOneTwoAndOneThousandOne_ExpectedThreeInResult()
+    {
+        string input = "1,2\n1001";
+
+        var result = stringCalculator.Add(input);
+
+        result.Should().Be(3);
+    }
+
+    [Fact]
+    public void Add_NegativeNumberOne_ExpectedExceptionInResult()
+    {
+        string input = "-1";
+
+        Action result = () => stringCalculator.Add(input);
+
+        result.Should().Throw<Exception>().WithMessage("Negatives not allowed: -1");
     }
 }
