@@ -44,12 +44,14 @@ public class CustomStringCalculator
     {
         var negativeNumbers = numbers.Where(x => x < 0);
 
-        if (negativeNumbers.Any())
+        if (!negativeNumbers.Any())
         {
-            var negativeNumbersExceptionStrings = negativeNumbers.Select(x => x.ToString());
-
-            throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersExceptionStrings));
+            return;
         }
+
+        var negativeNumbersExceptionStrings = negativeNumbers.Select(x => x.ToString());
+
+        throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersExceptionStrings));
     }
 
     private IList<string> SeparateCustomDelimitersAndNumbers(string numbers)
