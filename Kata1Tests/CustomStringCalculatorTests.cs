@@ -33,7 +33,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_CustomDelimitersAndSeveralNumbers_SumInResult()
+    public void Add_CustomDelimitersAndSeveralNumbers_SumOfNumbersInResult()
     {
         string input = @"//[]]]][&&&]\n1]]]2&&&3";
 
@@ -43,7 +43,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_SeveralNumbersWithOneNumberGreaterThenThousand_SumOfNumbersThatLessThenThousandInResult()
+    public void Add_SeveralNumbersWithOneWitchGreaterThanMaxNumberValue_SumOfNumbersThatLessMaxNumberValueInResult()
     {
         string input = @"1,2\n1001";
 
@@ -53,7 +53,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_NegativeNumber_ExceptionInResult()
+    public void Add_NegativeNumber_ExpectedThrowException()
     {
         string input = "-1";
 

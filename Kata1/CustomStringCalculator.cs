@@ -17,17 +17,11 @@ public class CustomStringCalculator
 
         if (numbers.StartsWith("//"))
         {
-            var slashesEndIndex = 2;
-
-            numbers = numbers.Remove(0, slashesEndIndex);
-
             var delimitersEndIndex = numbers.IndexOf(@"\n");
 
-            var separatedCustomDelimiters = numbers.Substring(0, delimitersEndIndex);
+            delimiters = AddCustomDelimiters(numbers, delimiters, delimitersEndIndex);
 
-            numbers = numbers.Substring(delimitersEndIndex); 
-
-            delimiters = AddCustomDelimiters(separatedCustomDelimiters, delimiters);
+            numbers = numbers.Substring(delimitersEndIndex);
         }
 
         var numbersStrings = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -35,16 +29,18 @@ public class CustomStringCalculator
         return CalculateSum(numbersStrings);
     }
 
-    private int CalculateSum(string[] numberStrings)
+    private int CalculateSum(string[] numbers)
     {
-        var parsedNumbers = numberStrings.Select(x => int.Parse(x));
+        var maxNumberValue = 1000;
 
-        ThrowNegativeNumbersException(parsedNumbers);
+        var parsedNumbers = numbers.Select(x => int.Parse(x));
 
-        return parsedNumbers.Where(x => x <= 1000).Sum();
+        ThrowExceptionIfNegativeNumbersExist(parsedNumbers);
+
+        return parsedNumbers.Where(x => x <= maxNumberValue).Sum();
     }
 
-    private void ThrowNegativeNumbersException(IEnumerable<int> numbers)
+    private void ThrowExceptionIfNegativeNumbersExist(IEnumerable<int> numbers)
     {
         var negativeNumbers = numbers.Where(x => x < 0);
 
@@ -53,28 +49,39 @@ public class CustomStringCalculator
             return;
         }
 
-        var negativeNumbersExceptionStrings = negativeNumbers.Select(x => x.ToString());
+        var negativeNumbersToException = negativeNumbers.Select(x => x.ToString());
 
-        throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersExceptionStrings));
+        throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersToException));
     }
 
-    private IList<string> AddCustomDelimiters(string customDelimitersString, IList<string> delimiters)
+    private IList<string> AddCustomDelimiters(string numbers, IList<string> delimiters, int delimitersEndIndex)
     {
-        if (!customDelimitersString.StartsWith('[') | !customDelimitersString.EndsWith(']'))
+        var customDelimiters = SeparateCustomDelimiters(numbers, delimitersEndIndex);
+
+        if (!customDelimiters.StartsWith('[') || !customDelimiters.EndsWith(']'))
         {
-            delimiters.Add(customDelimitersString);
+            delimiters.Add(customDelimiters);
 
             return delimiters;
         }
 
-        var cleanDelimitersStrings = RemoveAllSquareBrackets(customDelimitersString);
+        var cleanDelimiters = RemoveAllSquareBrackets(customDelimiters);
 
-        foreach (var customDelimiter in cleanDelimitersStrings)
+        foreach (var cleanDelimiter in cleanDelimiters)
         {
-            delimiters.Add(customDelimiter);
+            delimiters.Add(cleanDelimiter);
         }
 
         return delimiters;
+    }
+
+    private string SeparateCustomDelimiters(string numbers, int delimitersEndIndex)
+    {
+        var slashesEndIndex = 2;
+
+        var numbersWithoutSlashes = numbers.Remove(0, slashesEndIndex);
+
+        return numbersWithoutSlashes.Substring(0, delimitersEndIndex - slashesEndIndex);
     }
 
     private IEnumerable<string> RemoveAllSquareBrackets(string customDelimitersWithBrackets)
