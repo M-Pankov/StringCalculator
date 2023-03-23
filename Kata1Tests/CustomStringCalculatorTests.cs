@@ -13,7 +13,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_EmptyString_ZeroInResult()
+    public void Add_EmptyString_ShouldReturnZero()
     {
         string input = "";
 
@@ -23,7 +23,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_OneNumber_OneNumberInResult()
+    public void Add_Number_ShouldReturnThisNumder()
     {
         string input = "1";
 
@@ -33,7 +33,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_CustomDelimitersAndSeveralNumbers_SumOfNumbersInResult()
+    public void Add_CustomDelimitersAndSeveralNumbers_ShouldReturnSum()
     {
         string input = @"//[]]]][&&&]\n1]]]2&&&3";
 
@@ -43,7 +43,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_SeveralNumbersWithOneWitchGreaterThanMaxNumberValue_SumOfNumbersThatLessMaxNumberValueInResult()
+    public void Add_SeveralNumbersWithOneWitchGreaterThanMaxNumber_ShouldReturnSumOfNumbersThatLessMaxNumber()
     {
         string input = @"1,2\n1001";
 
@@ -53,7 +53,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_NegativeNumber_ExpectThrownException()
+    public void Add_NegativeNumber_ShouldThrowException()
     {
         string input = "-1";
 

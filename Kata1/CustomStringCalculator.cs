@@ -24,20 +24,20 @@ public class CustomStringCalculator
             numbers = numbers.Substring(delimitersEndIndex);
         }
 
-        var splitedNumbers = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
-
-        return CalculateSum(splitedNumbers);
+        return CalculateSum(numbers, delimiters);
     }
 
-    private int CalculateSum(string[] splitedNumbers)
+    private int CalculateSum(string numbers, IList<string> delimiters)
     {
-        var maxNumberValue = 1000;
+        var maxNumber = 1000;
+
+        var splitedNumbers = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
         var parsedNumbers = splitedNumbers.Select(x => int.Parse(x));
 
         ThrowExceptionIfNegativeNumbersExist(parsedNumbers);
 
-        return parsedNumbers.Where(x => x <= maxNumberValue).Sum();
+        return parsedNumbers.Where(x => x <= maxNumber).Sum();
     }
 
     private void ThrowExceptionIfNegativeNumbersExist(IEnumerable<int> parsedNumbers)
