@@ -53,7 +53,7 @@ public class CustomStringCalculatorTests
     }
 
     [Fact]
-    public void Add_NegativeNumber_ExpectedThrowException()
+    public void Add_NegativeNumber_ExpectThrownException()
     {
         string input = "-1";
 
