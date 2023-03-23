@@ -1,5 +1,6 @@
-﻿using StringCalculator;
-using System;
+﻿using System;
+
+namespace StringCalculator;
 
 internal class Program
 {

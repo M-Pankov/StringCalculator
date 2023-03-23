@@ -19,17 +19,17 @@ public class CustomStringCalculatorTests
 
         var result = _stringCalculator.Add(input);
 
-        Assert.Equal(result, 0);
+        Assert.Equal( 0, result);
     }
 
     [Fact]
-    public void Add_Number_ShouldReturnThisNumder()
+    public void Add_Number_ShouldReturnThisNumber()
     {
         string input = "1";
 
         var result = _stringCalculator.Add(input);
 
-        Assert.Equal(result, 1);
+        Assert.Equal( 1, result);
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class CustomStringCalculatorTests
 
         var result = _stringCalculator.Add(input);
 
-        Assert.Equal(result, 6);
+        Assert.Equal( 6, result);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class CustomStringCalculatorTests
 
         var result = _stringCalculator.Add(input);
 
-        Assert.Equal(result, 3);
+        Assert.Equal( 3, result);
     }
 
     [Fact]
@@ -59,6 +59,6 @@ public class CustomStringCalculatorTests
 
         var result = Assert.Throws<Exception>(() => _stringCalculator.Add(input));
 
-        Assert.Equal(result.Message, "Negatives not allowed: -1");
+        Assert.Equal( "Negatives not allowed: -1", result.Message);
     }
 }

@@ -21,7 +21,9 @@ public class CustomStringCalculator
 
             delimiters = AddCustomDelimiters(numbers, delimiters, delimitersEndIndex);
 
-            numbers = numbers.Substring(delimitersEndIndex);
+            var onlyNumbers = numbers.Substring(delimitersEndIndex);
+
+            return CalculateSum(onlyNumbers, delimiters);
         }
 
         return CalculateSum(numbers, delimiters);
@@ -31,9 +33,9 @@ public class CustomStringCalculator
     {
         var maxNumber = 1000;
 
-        var splitedNumbers = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+        var splitNumbers = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
-        var parsedNumbers = splitedNumbers.Select(x => int.Parse(x));
+        var parsedNumbers = splitNumbers.Select(x => int.Parse(x));
 
         ThrowExceptionIfNegativeNumbersExist(parsedNumbers);
 
@@ -49,9 +51,7 @@ public class CustomStringCalculator
             return;
         }
 
-        var negativeNumbersToException = negativeNumbers.Select(x => x.ToString());
-
-        throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbersToException));
+        throw new Exception("Negatives not allowed: " + string.Join(", ", negativeNumbers));
     }
 
     private IList<string> AddCustomDelimiters(string numbers, IList<string> delimiters, int delimitersEndIndex)
