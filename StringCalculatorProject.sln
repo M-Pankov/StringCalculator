@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringCalculator", "Kata1\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringCalculator.Tests", "Kata1Tests\StringCalculator.Tests.csproj", "{AE11CDF7-0000-442E-8022-76FF367B5B89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleStringCalculator", "ConsoleStringCalculator\ConsoleStringCalculator.csproj", "{69E2FACD-4FAB-4DB1-ACAC-E940C60C8F24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleStringCalculator.Tests", "ConsoleStringCalculator.Tests\ConsoleStringCalculator.Tests.csproj", "{D0A4D3CB-1003-4854-9A69-913EF0BB9169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{AE11CDF7-0000-442E-8022-76FF367B5B89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE11CDF7-0000-442E-8022-76FF367B5B89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE11CDF7-0000-442E-8022-76FF367B5B89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69E2FACD-4FAB-4DB1-ACAC-E940C60C8F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69E2FACD-4FAB-4DB1-ACAC-E940C60C8F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69E2FACD-4FAB-4DB1-ACAC-E940C60C8F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69E2FACD-4FAB-4DB1-ACAC-E940C60C8F24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A4D3CB-1003-4854-9A69-913EF0BB9169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A4D3CB-1003-4854-9A69-913EF0BB9169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A4D3CB-1003-4854-9A69-913EF0BB9169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A4D3CB-1003-4854-9A69-913EF0BB9169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

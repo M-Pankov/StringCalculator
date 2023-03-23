@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace StringCalculator;
 
-public class CustomStringCalculator
+public class CustomStringCalculator : ICustomStringCalculator
 {
     public int Add(string numbers)
     {
