@@ -24,15 +24,13 @@ public class ConsoleCalculatorWorker
 
     private void DoWork(string input)
     {
-        var numbers = input;
-
-        while (!string.IsNullOrEmpty(numbers))
+        while (!string.IsNullOrEmpty(input))
         {
-            var sum = _stringCalculator.Add(numbers);
+            var sum = _stringCalculator.Add(input);
 
             _consoleWrapper.WriteLine("Result is: " + sum + "\r\nyou can enter other numbers (enter to exit)?");
 
-            numbers = _consoleWrapper.ReadLine();
+            input = _consoleWrapper.ReadLine();
         }
     }
 }

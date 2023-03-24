@@ -78,7 +78,6 @@ public class CustomStringCalculator
     private string SeparateCustomDelimiters(string numbers, int delimitersEndIndex)
     {
         var slashesEndIndex = 2;
-
         var numbersWithoutSlashes = numbers.Remove(0, slashesEndIndex);
 
         return numbersWithoutSlashes.Substring(0, delimitersEndIndex - slashesEndIndex);
@@ -87,9 +86,7 @@ public class CustomStringCalculator
     private IEnumerable<string> RemoveAllSquareBrackets(string customDelimitersWithBrackets)
     {
         var delimitersWithoutFirstBracket = customDelimitersWithBrackets.Remove(0, 1);
-
         var lastBracketIndex = delimitersWithoutFirstBracket.Length - 1;
-
         var delimitersWithoutFirstAndLastBrackets = delimitersWithoutFirstBracket.Remove(lastBracketIndex);
 
         return delimitersWithoutFirstAndLastBrackets.Split("][", StringSplitOptions.RemoveEmptyEntries);

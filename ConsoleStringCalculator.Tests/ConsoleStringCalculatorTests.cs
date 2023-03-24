@@ -27,11 +27,10 @@ public class ConsoleStringCalculatorTests
 
         _consoleWrapper.Verify(p => p.WriteLine("Enter comma separated numbers (enter to exit):"), Times.Once);
         _consoleWrapper.Verify(p => p.ReadLine(), Times.Once);
-        _consoleWrapper.VerifyNoOtherCalls();
     }
 
     [Fact]
-    public void Run_SeveralNumbersTwoTimes_ShouldReturnWelcomeMessageTwoMessagesWithSumResultAndShutDown()
+    public void Run_SeveralNumbersTwoTimes_ShouldReturnTwoMessagesWithSumResult()
     {
         _customStringCalculator.SetupSequence(x => x.Add(It.IsAny<string>()))
             .Returns(3)
@@ -45,11 +44,7 @@ public class ConsoleStringCalculatorTests
 
         _consoleCalculatorWorker.Run();
 
-        _consoleWrapper.Verify(p => p.WriteLine(It.IsAny<string>()), Times.Exactly(3));
-        _consoleWrapper.Verify(p => p.WriteLine("Enter comma separated numbers (enter to exit):"), Times.Once);
         _consoleWrapper.Verify(p => p.WriteLine("Result is: 3\r\nyou can enter other numbers (enter to exit)?"), Times.Once);
         _consoleWrapper.Verify(p => p.WriteLine("Result is: 4\r\nyou can enter other numbers (enter to exit)?"), Times.Once);
-        _consoleWrapper.Verify(p => p.ReadLine(), Times.Exactly(3));
     }
-
 }

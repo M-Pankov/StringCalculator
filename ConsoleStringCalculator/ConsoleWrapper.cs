@@ -13,5 +13,4 @@ public class ConsoleWrapper
     {
         Console.WriteLine(message);
     }
-
 }
