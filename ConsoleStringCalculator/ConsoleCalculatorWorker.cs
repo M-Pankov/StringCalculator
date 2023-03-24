@@ -1,17 +1,11 @@
 ﻿using StringCalculator;
-using System;
 
 namespace ConsoleStringCalculator;
 
 public class ConsoleCalculatorWorker
 {
     private readonly CustomStringCalculator _stringCalculator;
-
     private readonly ConsoleWrapper _consoleWrapper;
-
-    public ConsoleCalculatorWorker(): this(new CustomStringCalculator(), new ConsoleWrapper())
-    {
-    }
 
     public ConsoleCalculatorWorker(CustomStringCalculator calculator, ConsoleWrapper consoleWrapper)
     {
@@ -24,21 +18,21 @@ public class ConsoleCalculatorWorker
         _consoleWrapper.WriteLine("Enter comma separated numbers (enter to exit):");
 
         var input = _consoleWrapper.ReadLine();
+
         DoWork(input);
     }
 
     private void DoWork(string input)
     {
-        if (string.IsNullOrEmpty(input))
+        var numbers = input;
+
+        while (!string.IsNullOrEmpty(numbers))
         {
-            return;
+            var sum = _stringCalculator.Add(numbers);
+
+            _consoleWrapper.WriteLine("Result is: " + sum + "\r\nyou can enter other numbers (enter to exit)?");
+
+            numbers = _consoleWrapper.ReadLine();
         }
-
-        var sum = _stringCalculator.Add(input);
-
-        _consoleWrapper.WriteLine("Result is: " + sum + "\r\nyou can enter other numbers (enter to exit)?");
-
-        var nextInput = _consoleWrapper.ReadLine();
-        DoWork(nextInput);
     }
 }
