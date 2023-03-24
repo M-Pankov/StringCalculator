@@ -1,43 +1,44 @@
 ﻿using StringCalculator;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleStringCalculator
+namespace ConsoleStringCalculator;
+
+public class ConsoleCalculatorWorker
 {
-    public class ConsoleCalculatorWorker
+    private readonly CustomStringCalculator _stringCalculator;
+
+    private readonly ConsoleWrapper _consoleWrapper;
+
+    public ConsoleCalculatorWorker(): this(new CustomStringCalculator(), new ConsoleWrapper())
     {
-        private readonly ICustomStringCalculator _stringCalculator;
-        public ConsoleCalculatorWorker(ICustomStringCalculator calculator)
+    }
+
+    public ConsoleCalculatorWorker(CustomStringCalculator calculator, ConsoleWrapper consoleWrapper)
+    {
+        _stringCalculator = calculator;
+        _consoleWrapper = consoleWrapper;
+    }
+
+    public void Run()
+    {
+        _consoleWrapper.WriteLine("Enter comma separated numbers (enter to exit):");
+
+        var input = _consoleWrapper.ReadLine();
+        DoWork(input);
+    }
+
+    private void DoWork(string input)
+    {
+        if (string.IsNullOrEmpty(input))
         {
-            _stringCalculator = calculator;
+            return;
         }
 
-        public void Run()
-        {
-            Console.WriteLine("Enter comma separated numbers (enter to exit):");
+        var sum = _stringCalculator.Add(input);
 
-            var input = Console.ReadLine();
+        _consoleWrapper.WriteLine("Result is: " + sum + "\r\nyou can enter other numbers (enter to exit)?");
 
-            RunAgain(input);
-        }
-
-        private void RunAgain(string input)
-        {
-            if(!string.IsNullOrEmpty(input))
-            {
-                var sum = _stringCalculator.Add(input);
-
-                Console.WriteLine(sum);
-
-                Console.WriteLine("you can enter other numbers (enter to exit)?");
-
-                var nextInput = Console.ReadLine();
-
-                RunAgain(nextInput);
-            }
-        }
+        var nextInput = _consoleWrapper.ReadLine();
+        DoWork(nextInput);
     }
 }

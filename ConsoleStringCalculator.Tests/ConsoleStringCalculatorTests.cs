@@ -1,35 +1,31 @@
-﻿using ConsoleStringCalculator;
-using Moq;
-using System;
-using System.IO;
+﻿using Moq;
+using StringCalculator;
 using Xunit;
 
-namespace StringCalculator.Tests;
+namespace ConsoleStringCalculator.Tests;
 
 public class ConsoleStringCalculatorTests
 {
-    private readonly Mock<ICustomStringCalculator> _customStringCalculator;
+    private readonly Mock<CustomStringCalculator> _customStringCalculator;
+    private readonly Mock<ConsoleWrapper> _consoleWrapper;
     private readonly ConsoleCalculatorWorker _consoleCalculatorWorker;
 
     public ConsoleStringCalculatorTests()
     {
-        _customStringCalculator = new Mock<ICustomStringCalculator>();
-        _consoleCalculatorWorker = new ConsoleCalculatorWorker(_customStringCalculator.Object);
+        _consoleWrapper = new Mock<ConsoleWrapper>();
+        _customStringCalculator = new Mock<CustomStringCalculator>();
+        _consoleCalculatorWorker = new ConsoleCalculatorWorker(_customStringCalculator.Object, _consoleWrapper.Object);
     }
 
     [Fact]
-    public void Run_SeveralNumbers_ShouldReturnCorrectString()
+    public void Run_SeveralNumbers_Should()
     {
-        _customStringCalculator.Setup(x => x.Add("1,2")).Returns(3);
+        _consoleWrapper.Setup(x => x.WriteLine(It.IsAny<string>()));
 
-        var output = new StringWriter();
-        Console.SetOut(output);
-
-        var input = new StringReader("1,2");
-        Console.SetIn(input);
+        _consoleWrapper.Setup(x => x.ReadLine()).Returns("");
 
         _consoleCalculatorWorker.Run();
 
-        Assert.Equal(string.Format("Enter comma separated numbers (enter to exit):\r\n3\r\nyou can enter other numbers (enter to exit)?\r\n"),output.ToString());
+        _consoleWrapper.VerifyAll();
     }
 }

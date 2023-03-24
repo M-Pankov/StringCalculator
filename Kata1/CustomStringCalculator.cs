@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace StringCalculator;
 
-public class CustomStringCalculator : ICustomStringCalculator
+public class CustomStringCalculator
 {
-    public int Add(string numbers)
+    public virtual int Add(string numbers)
     {
         if (string.IsNullOrEmpty(numbers))
         {
